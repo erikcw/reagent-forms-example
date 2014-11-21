@@ -10,6 +10,8 @@
 
 (def status-form
   [:div
+   [:h3 "Enter a status code into the form field, the select field should update."]
+   (row "Enter a status code" [:input.form-control {:field :text :id :example :placeholder "Input a valid status key (A, P, or X)"}])
    (row "Status" [:select.form-control {:field :list :id :status}
                  [:option {:key "A"} "Active"]
                  [:option {:key "P"} "Paused"]
@@ -19,25 +21,13 @@
   (let [doc (atom {:status "P"})]
     (fn []
       [:div [:h1 "Status Page"]
-       [:div
-       [:button
-        {:on-click (fn [e]
-                     (.info js/console "archive button clicked")
-                     (swap! doc :status "X"))}
-        "Archive"]
-       [:button
-        {:on-click (fn [e]
-                     (.info js/console "pause button clicked")
-                     (swap! doc :status "P"))}
-        "Pause"]
-
-       [:button
-        {:on-click (fn [e]
-                     (.info js/console "activate button clicked")
-                     (swap! doc :status "A"))}
-        "Activate"]
-        [:p (str @doc)]]
        [edn->hiccup @doc]
-       [bind-fields status-form doc]])))
+       [bind-fields status-form doc (fn [id value doc]
+                                      (.log js/console "doc before event modification" (clj->js doc))
+                                      (if (not (empty? (:example doc)))
+                                        (let [new-doc (assoc doc :status (:example doc))]
+                                          (.log js/console "doc after event modification" (clj->js doc))
+                                          new-doc)
+                                        doc))]])))
 
 (reagent/render-component [page] (.getElementById js/document "app"))
