@@ -19,6 +19,24 @@
   (let [doc (atom {:status "P"})]
     (fn []
       [:div [:h1 "Status Page"]
+       [:div
+       [:button
+        {:on-click (fn [e]
+                     (.info js/console "archive button clicked")
+                     (swap! doc :status "X"))}
+        "Archive"]
+       [:button
+        {:on-click (fn [e]
+                     (.info js/console "pause button clicked")
+                     (swap! doc :status "P"))}
+        "Pause"]
+
+       [:button
+        {:on-click (fn [e]
+                     (.info js/console "activate button clicked")
+                     (swap! doc :status "A"))}
+        "Activate"]
+        [:p (str @doc)]]
        [edn->hiccup @doc]
        [bind-fields status-form doc]])))
 
