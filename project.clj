@@ -7,7 +7,7 @@
    [json-html "0.2.3"]
    [org.clojure/clojurescript "0.0-2322"]
    [selmer "0.7.2"]
-   [reagent-forms "0.2.5"]
+   [reagent-forms "0.2.6"]
    [ring-server "0.3.1"]
    [lib-noir "0.8.9"]]
 
